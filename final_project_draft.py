@@ -36,6 +36,8 @@ def get_soup(url):
 def is_absolute_url(url):
     '''
     Is url an absolute URL?
+    
+    Code from PA1 utility.py.
     '''
     if url == "":
         return False
@@ -47,6 +49,8 @@ def convert_if_relative_url(current_url, new_url):
     Attempt to determine whether new_url is a relative URL and if so,
     use current_url to determine the path and create a new absolute
     URL.  Will add the protocol, if that is all that is missing.
+    
+    Code from PA1 utility.py.
 
     Inputs:
         current_url: absolute URL
@@ -127,18 +131,28 @@ for i in range(1, 8):
     covid_bill_urls.extend(find_bills(search_covid_bills, i))
 
 
-def extract_bill_text(bill_url):
+def extract_bill_info(bill_url):
     soup = get_soup(bill_url)
-    title = soup.find("title").text  # needs to be cleaned
+    sponsor_date = soup.find("td").text
+    intro_date = re.search("Introduced (?P<intro_date>\d{2}/\d{2}/\d{4})",
+                           sponsor_date).group("intro_date")
+    title_text = soup.find("title").text
+    title = re.search("Text - (?P<title>.*) \| Congress*",
+                      title_text).group("title")
     text_container = soup.find('div', {"id": "billTextContainerTopScrollBar"})
-    text = text_container.next_sibling.text  # raw text
-    words = [word for word in re.findall(r"\w+", text.lower()) if word
-             not in INDEX_IGNORE]  # not sure of the proper format for analysis
-    return(title, text, words)
+    if text_container is not None:
+        text = text_container.next_sibling.text  # raw text
+        words = [word for word in re.findall(r"\w+", text.lower()) if word
+                not in INDEX_IGNORE]  # not sure of proper format for analysis
+    else:
+        text = "Text not available"
+        words = []  
+    return(title, intro_date, text, words)
 
 
-# Extracting the title, text, and words for each bill and storing in a dict
+# Extracting the info for each bill and storing in a dict
+# not sure of proper format for this either
 bills = {}
 for b_url in covid_bill_urls:
-    title, text, words = extract_bill_text(b_url)
-    bills[title] = text
+    title, intro_date, text, words = extract_bill_text(b_url)
+    bills[title] = [intro_date, text, words]
