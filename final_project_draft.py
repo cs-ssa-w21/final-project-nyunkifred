@@ -14,8 +14,6 @@ import urllib.parse
 import re
 import json
 
-INDEX_IGNORE = stop_words.STOP_WORDS
-
 
 def get_soup(url):
     '''
@@ -221,6 +219,8 @@ write_bills_json("bills_250.json", bills_250)
 bills = {}
 for b_url in covid_bill_urls:
     f_title, bill_no, title, intro_date, text = extract_bill_info(b_url)
+    if f_title.startswith("Not available") or extract_bill_info(b_url) is None:
+        print(b_url)
     bills[f_title] = {"intro date": intro_date,
                       "bill no.": bill_no,
                       "title": title,
