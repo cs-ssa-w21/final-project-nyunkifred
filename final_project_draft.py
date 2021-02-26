@@ -12,7 +12,6 @@ import requests
 import bs4
 import urllib.parse
 import re
-import stop_words
 import json
 
 INDEX_IGNORE = stop_words.STOP_WORDS
@@ -132,7 +131,9 @@ def find_bills(search_page, page_number):
 
 
 # Starting search page (with page number removed)
-search_covid_bills = "https://www.congress.gov/search?searchResultViewType=expanded&q={%22congress%22:[%22116%22,%22117%22],%22source%22:[%22legislation%22],%22search%22:%22covid%22,%22type%22:%22bills%22}&pageSize=250&page="
+search_covid_bills = "https://www.congress.gov/search?searchResultViewType=\
+expanded&q={%22congress%22:[%22116%22,%22117%22],%22source%22:[%22legislation%\
+22],%22search%22:%22covid%22,%22type%22:%22bills%22}&pageSize=250&page="
 
 # Scraping all pages
 covid_bill_urls = []
@@ -164,27 +165,28 @@ def extract_bill_info(bill_url):
     if soup.find("title") is not None:
         title_text = soup.find("title").text
         title_text_clean = re.sub(r"\u2013", " ", title_text)
-        full_title = re.search("Text - (?P<full_title>.*) \| Congress*",
-                               title_text_clean).group("full_title")
-        bill_no = re.search("(?P<bill_no>[A-Z].*\d*) - ",
-                            full_title).group("bill_no")
-        title = re.search("\): (?P<title>.*)", full_title).group("title")
+        title_search = re.search("Text - (?P<full_title>.*) \| Congress*",
+                                 title_text_clean)
+        if title_search is not None:
+            full_title = title_search.group("full_title")
+            bill_no = re.search("(?P<bill_no>[A-Z].*\d*) - ",
+                                full_title).group("bill_no")
+            title = re.search("\): (?P<title>.*)", full_title).group("title")
+        else:
+            full_title = "Not available, see page: " + bill_url
+            bill_no = "Not available"
+            title = "Not available"
     else:
         full_title = "Not available, see page: " + bill_url
         bill_no = "Not available"
         title = "Not available"
-    # bill text and words
+    # bill text
     text_container = soup.find('div', {"id": "billTextContainerTopScrollBar"})
     if text_container is not None:
         text = text_container.next_sibling.text  # raw text
-        # temporarily removing words to make the code run faster
-        # words = [word for word in re.findall(r"\w+", text.lower()) if word
-        #          not in INDEX_IGNORE]
     else:
         text = "Not available, see page: " + bill_url
-        # temporarily removing words to make the code run faster
-        # words = []
-    return(full_title, bill_no, title, intro_date, text)  # , words)
+    return(full_title, bill_no, title, intro_date, text)
 
 
 def write_bills_json(output_filename, covid_bill_dict):
