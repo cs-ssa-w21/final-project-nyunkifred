@@ -1,0 +1,6 @@
+emergency	1
+response	1
+cure	1
+global	1
+health	1
+security	1
