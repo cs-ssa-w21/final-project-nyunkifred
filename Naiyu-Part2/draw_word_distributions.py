@@ -3,10 +3,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # draw word frequency chart every 3 months
-
 def merge_date(year, merge_number=3):
+    """
+    This is to find all covid bills in a given year.
+    """
     assert isinstance(year, str)
-    date2id_month = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+    date2id_month = ['01', '02', '03', '04', '05', '06', \
+        '07', '08', '09', '10', '11', '12']
     merge_dict = {}
     for index, month in enumerate(date2id_month):
         cur_filename = "output/" + year + month + "_word_all_frequency.txt"
@@ -44,7 +47,6 @@ for i in merge_dict.keys():
         for word, count in merged_common_words:
             f.write(word+"\t"+str(count)+"\n")
     df1 = pd.DataFrame(merged_common_words, columns=[id2month_label[i], 'count'])[:20]
-
     df1.groupby(id2month_label[i]).sum()['count'].sort_values(ascending=False).plot(
         kind='bar', colormap=color_list[i], rot=270, title='Top 20 words in review after removing stop words')
     plt.savefig('output/'+str(i)+'_top20_word.png', bbox_inches='tight')

@@ -1,8 +1,10 @@
 from wordcloud import WordCloud
 import matplotlib.colors as colors
 
-id2month_label = {0: 'Jan-Mar', 1: 'Apr-Jun', 2: "Jul-Sep", 3: 'Oct-Dec'}
-stop_words = [word.strip('\n') for word in open("data/stopwords.txt", "r").readlines()]
+id2month_label = {0: 'Q1: Jan-Mar', 1: 'Q2: Apr-Jun', \
+    2: "Q3: Jul-Sep", 3: 'Q4: Oct-Dec'}
+stop_words = [word.strip('\n') for word \
+    in open("data/stopwords.txt", "r").readlines()]
 
 for i in range(4):
     filename = "output/" + str(i) + "_word_frequency.txt"
@@ -20,7 +22,7 @@ for i in range(4):
                  colors.ListedColormap(['#8B8B00', '#FFD700', '#CDAD00', '#EEEE00']),
                  colors.ListedColormap(['#FF7F50', '#FF8C00', '#FFA07A', '#E9967A'])]
 
-    # 绘制词云图
+    # plot wordclouds
     wc = WordCloud(
         background_color="white",
         max_words=300,

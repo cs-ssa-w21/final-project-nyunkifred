@@ -218,9 +218,14 @@ write_bills_json("bills_250.json", bills_250)
 # using full dictionary of bills
 bills = {}
 for b_url in covid_bill_urls:
+<<<<<<< Updated upstream:final_project_data_scraping.py
     f_title, bill_no, title, intro_date, text = extract_bill_info(b_url)
     bills[f_title] = {"intro date": intro_date,
                       "bill no.": bill_no,
                       "title": title,
                       "text": text}
 write_bills_json("bills.json", bills)
+=======
+    title, intro_date, text, words = extract_bill_info(b_url)
+    bills[title] = [intro_date, text, words]
+>>>>>>> Stashed changes:final_project_draft.py

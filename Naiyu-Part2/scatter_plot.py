@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 import jieba
 
 data_center = DataCenter()
-
 dates = data_center.read_json(type="date")
 titles = data_center.read_json(type="title")
 texts = data_center.read_json(type="text")
