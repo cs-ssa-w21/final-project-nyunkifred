@@ -18,5 +18,5 @@ soup = bs4.BeautifulSoup(page, "html5lib")
 body = soup.find("body").text
 words = [word for word in re.findall(r"\w+", body)]
 stop_words_leginfo = set(words[10:])
-
+# join these two sets of stopwords
 STOP_WORDS = stop_words_git.union(stop_words_leginfo)
