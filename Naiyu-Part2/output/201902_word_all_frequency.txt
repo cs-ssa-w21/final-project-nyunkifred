@@ -1,7 +1,0 @@
-transportation	1
-security	1
-patient	1
-protection	1
-affordable	1
-care	1
-enhancement	1

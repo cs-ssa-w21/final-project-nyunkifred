@@ -1,4 +1,0 @@
-united	1
-security	1
-assistance	1
-authorization	1
