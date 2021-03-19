@@ -17,3 +17,5 @@ PART3-Correlation_Matrix_Heatmap-Zheng_He: contains the code for creating the fi
 dataframe which includes the keywords whose frequencies are within the top-20 of 
 all quarterly keyword lists produced by Naiyu Jiang's code, the correlation matrix
 based upon the final dataframe, and the heatmap of that correlation matrix.
+
+Presentation: Contains our presentation slides.
