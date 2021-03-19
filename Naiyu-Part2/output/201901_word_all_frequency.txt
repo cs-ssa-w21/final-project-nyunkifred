@@ -1,5 +1,0 @@
-protection	1
-health	1
-care	1
-enhancement	1
-consolidated	1
