@@ -182,8 +182,6 @@ def main():
     ax = plt.gca()
     ax.xaxis.set_major_locator(x_major_locator)
     plt.xlim(0, 28)
-    plt.xticks(np.arange(28), xlabel, rotation=270)
-    # plt.show()
 
 if __name__ == '__main__':
     main()
@@ -237,7 +235,7 @@ for i in merge_dict.keys():
         kind='bar', colormap=color_list[i], rot=270, \
             title='Top 20 words in review after removing stop words')
     plt.savefig('output/'+str(i)+'_top20_word.png', bbox_inches='tight')
-    # plt.show()
+    plt.clf()
 
 
 # STEP 4: DRAW WORDCLOUD
